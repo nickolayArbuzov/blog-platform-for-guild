@@ -8,8 +8,6 @@ import { DeviceModel } from '../../features/devices/domain/entitites/device.inte
 import { LikeModel } from '../../features/likes/domain/entitites/like.interface';
 import { LoggerModel } from '../logger/domain/entitites/logger.interface';
 import { BloggerUserModel } from '../../features/blogger/blogger-user/domain/entitites/blogger-user.interface';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
 
 @Injectable()
 export class AllDataService {
@@ -30,7 +28,6 @@ export class AllDataService {
     private Logger: Model<LoggerModel>,
     @Inject('BLOGGER-USER_MONGOOSE')
     private BloggerUser: Model<BloggerUserModel>,
-    @InjectDataSource() private readonly db: DataSource,
   ) {}
 
   async deleteAllData(): Promise<void> {
@@ -41,15 +38,6 @@ export class AllDataService {
     await this.Device.deleteMany()
     await this.Like.deleteMany()
     await this.BloggerUser.deleteMany()
-    await this.db.query(`
-      delete from "bloggerUser";
-      delete from blogs;
-      delete from comments;
-      delete from devices;
-      delete from likes;
-      delete from posts;
-      delete from users;
-    `);
   }
   
 }
