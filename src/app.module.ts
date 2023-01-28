@@ -14,7 +14,6 @@ import { LikesModule } from './features/likes/likes.module';
 import { BloggerBlogModule } from './features/blogger/blogger-blog/blogger-blog.module';
 import { SABlogsModule } from './features/sa/sa-blogs/sa-blogs.module';
 import { BloggerUserModule } from './features/blogger/blogger-user/blogger-user.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   controllers: [AppController],
@@ -23,24 +22,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   ],
   imports: [
     ConfigModule.forRoot({isGlobal: true}),
-    TypeOrmModule.forRootAsync({inject: [ConfigService], useFactory: (configService: ConfigService) => {
-      return {
-        type: 'postgres',
-        host: configService.get('POSTGRES_HOST'),
-        port: +configService.get('POSTGRES_PORT'),
-        username: configService.get('POSTGRES_USER'),
-        password: configService.get('POSTGRES_PASS'),
-        database: configService.get('POSTGRES_DB'),
-        autoLoadEntities: false,
-        synchronize: true,
-        poolSize: 5,
-        extra: {
-          connectionLimit: 5,
-          max: 5,
-          connectionTimeoutMillis: 1000,
-        },
-      }
-    }}),
     DatabaseModule,
     BlogsModule,
     BloggerBlogModule,
